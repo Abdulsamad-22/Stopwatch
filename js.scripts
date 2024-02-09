@@ -1,0 +1,77 @@
+let time = {
+			Hour: 0,
+			Mins: 0,
+			Secs: 0
+		};
+
+		let startStopButton = document.querySelector('.js-start-button');
+
+		let intervalId;
+
+		// Starts and Stops the code when the button is clicked on
+
+		  startStopButton.addEventListener('click', () => {
+		  	if (startStopButton.innerText === 'Start') {
+
+		  		startStopButton.innerText = 'Stop';
+		  		startStopButton.style.backgroundColor = '#DB1D1D';
+		  		intervalId = setInterval( () => {
+		  			stopWatch();
+		  		}, 1000);
+
+		  	} else {
+		  		startStopButton.innerText = 'Start';
+		  		startStopButton.style.backgroundColor = '#221ED4';
+		  		clearInterval(intervalId);
+		  	}
+
+		});
+
+		  //This displays the time counter on the screen in two digits
+
+		function displayTime () {
+			 let timer = document.querySelector('.js-time-count');
+
+			 let formattedTime = `${String(time.Hour).padStart(2, '0')}:${String(time.Mins).padStart(2, '0')}:${String(time.Secs).padStart(2, '0')}`;
+
+			 timer.innerText = formattedTime;
+
+		}
+
+		//condition for the seconds, minutes and hours
+
+		const stopWatch = () => {
+
+				time.Secs = (time.Secs + 1) % 60;
+
+				if (time.Secs === 0) {
+					time.Mins = (time.Mins +=1) % 60;
+
+					if (time.Mins === 0) {
+						time.Hour +=1;
+					}
+				};
+				
+				displayTime();
+		}
+
+		// Resets the time count to "00:00:00"
+
+		const resetButton = document.querySelector('.js-reset-button');
+
+			resetButton.addEventListener('click', () => {
+				  time.Hour = 0;
+				  time.Mins = 0;
+				  time.Secs = 0;
+
+				  resetDisplay();
+				  clearInterval(intervalId);
+				  document.querySelector('.js-start-button').innerText = 'Start';
+				  startStopButton.style.backgroundColor = '#221ED4';
+			});
+
+			function resetDisplay () {
+				const resetDisplay = document.querySelector('.js-time-count');
+
+				resetDisplay.innerText =  `${String(time.Hour).padStart(2, '0')}:${String(time.Mins).padStart(2, '0')}:${String(time.Secs).padStart(2, '0')}`;
+			}
